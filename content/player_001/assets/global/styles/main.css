@@ -1,0 +1,14 @@
+body, h1, h2, h3, p {
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+	color: #fff;
+}
+
+button {
+	padding: 10px;
+	margin-top: 10px;
+}
+
+.center {
+	text-align: center;
+}
