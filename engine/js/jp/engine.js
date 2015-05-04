@@ -89,7 +89,6 @@ jp.engine.prototype.getContentPaths = function() {
 
   if (uriPaths) {
     uriPaths = uriPaths.split(',');
-    console.log(uriPaths);
   }
 
   this.current_ = 0;
@@ -109,7 +108,22 @@ jp.engine.prototype.getContentPaths = function() {
  * @return {boolean} is there a next model to load?
 */
 jp.engine.prototype.hasNext = function() {
-  return true;
+  var next = this.contentPaths_[this.current_ + 1];
+  return next ? true : false;
+};
+
+
+/*
+ * Determines if there is a previous model
+ * @return {boolean} is there a previous model to load?
+*/
+jp.engine.prototype.hasPrevious = function() {
+  var current = this.current_ - 1;
+  if (this.player_) {
+    current--;
+  }
+  var previous = this.contentPaths_[current];
+  return previous ? true : false;
 };
 
 
@@ -235,6 +249,7 @@ jp.engine.prototype.handleJSONLoad = function(path, data) {
 jp.engine.prototype.createPlayer = function() {
   this.playerModel_ = this.getCurrentModel()['page'];
   this.player_ = new jp.page(this.playerModel_);
+  console.log('Activating', this.currentPath_);
   jp.events.listen(this.player_, jp.events.readyToActivate, jp.bind(this.getNext, this, this.setCourseInfo), this);
 };
 
@@ -250,6 +265,7 @@ jp.engine.prototype.setCourseInfo = function() {
   this.title_ = this.getCurrentLocalization()['course']['title'];
   document.title = this.title_;
   this.player_.activate();
+  this.updateMedia();
   this.loadPage();
 };
 
@@ -259,7 +275,7 @@ jp.engine.prototype.setCourseInfo = function() {
 */
 jp.engine.prototype.loadPage = function() {
   if (!this.loaded_) {
-    jp.error(jp.errorCodes['contentLoadFail'], this.currentPath_ , true);
+    jp.error(jp.errorCodes['contentLoadFail'], this.currentPath_, true);
   }
   this.model_ = this.getCurrentModel()['page'];
   this.page_ = new jp.page(this.model_);
@@ -273,15 +289,40 @@ jp.engine.prototype.loadPage = function() {
 jp.engine.prototype.activatePage = function() {
   this.currentTimeLine_ = this.page_.getTimeLine();
   jp.events.listen(this.page_, jp.events.pageCompleted, this.handlePageCompleted, this);
+  console.log('Activating', this.currentPath_);
   this.page_.activate();
+  this.updateMedia();
 };
 
 
 /*
- * Activate the page
+ * Handles the page being completed
 */
 jp.engine.prototype.handlePageCompleted = function() {
-  console.log('page completed');
+  console.log('page completed', this.getCurrentModel()['page']['id']);
+  this.getCurrentModel()['completed'] = true;
+  this.updateMedia();
+};
+
+
+/*
+ * Is the current model completed?
+*/
+jp.engine.prototype.isCurrentCompleted = function() {
+  return this.getCurrentModel()['completed'];
+};
+
+
+/*
+ * Update the active media
+*/
+jp.engine.prototype.updateMedia = function() {
+  if (this.player_) {
+    this.player_.update();
+  }
+  if (this.page_) {
+    this.page_.update();
+  }
 };
 
 

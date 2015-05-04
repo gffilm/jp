@@ -1,3 +1,14 @@
+
+
+body, h1, h2, h3, p {
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0;
+	color: #fff;
+}
+
+body {
+  background-color: {#pageGBColor /};
+}
 h1 {
 	position: relative;
 	margin-top: 10px;
@@ -10,6 +21,11 @@ h2 {
 	font-weight: normal;
 	color: #cfcfcf;
 }
+
+.center {
+	text-align: center;
+}
+
 
 #demoWrapper {
 	width: 600px;
@@ -63,6 +79,6 @@ h2 {
 #slider{
 	width: 580px;
 	margin:10px;
-	background-color:#ff0;
+  background-color:#ff0;
 }
 

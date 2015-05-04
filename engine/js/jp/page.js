@@ -42,6 +42,12 @@ jp.page = function(model) {
  */
   this.scripts_ = model['scripts'];
 
+  /*
+ * The completion trigger
+ * @type {string}
+ */
+  this.completionTrigger_ = model['completionTrigger'];
+
  /*
  * The style helper.
  * @type {jp.Styles}
@@ -59,9 +65,6 @@ jp.page = function(model) {
  * @type {jp.Styles}
  */
   this.scriptHelper_ = new jp.scripts();
-
-  // Add listeners before loading
-  this.addListeners();
 
  /*
  * The styles loaded?
@@ -83,9 +86,13 @@ jp.page = function(model) {
 
  /*
  * The timeline
- * @type {TimelineLite}
+ * @type {TimelineMax}
  */
-  this.timeLine_ = new TimelineLite();
+
+  this.timeLine_ = new TimelineMax();
+
+  // Add listeners before loading
+  this.addListeners();
 
   // Add the styles
   this.styleHelper_.addStyles(this.styles_);
@@ -127,8 +134,7 @@ jp.page.prototype.addListeners = function() {
 jp.page.prototype.setReady = function(type) {
   if (type === 'scripts') {
     this.scriptsLoaded_ = true;
-    this.script = this.scriptHelper_.getScript();
-    this.activate = eval(this.script);
+    eval(this.scriptHelper_.getScript());
   }
 
   if (type === 'styles') {
@@ -141,7 +147,6 @@ jp.page.prototype.setReady = function(type) {
   }
   if (this.stylesLoaded_ && this.layoutsLoaded_ && this.scriptsLoaded_ && !this.isActivated_) {
     this.isActivated_ = true;
-    console.log('Activating', this.id_);
     jp.events.talk(this, jp.events.readyToActivate);
   }
 };
@@ -163,12 +168,20 @@ jp.page.prototype.dispose = function() {
  * Base function that is overridden by the loaded scripts
 */
 jp.page.prototype.activate = function() {
+  this.timeLine_.addCallback(jp.bind(this.animationCompleted, this), this.completionTrigger_);
 }
 
 /*
  * Base function that is overridden by the loaded scripts
 */
-jp.page.prototype.update = function() {
+jp.page.prototype.update = function() {}
+
+
+/*
+ * Base function that is overridden by the loaded scripts
+*/
+jp.page.prototype.animationCompleted = function() {
+  jp.events.talk(this, jp.events.pageCompleted);
 }
 
 

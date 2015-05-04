@@ -1,6 +1,9 @@
 this.activate = function() {
   $("#play").click(function() {
-    if(jp.getCurrentTimeline().progress() != 1){
+    $("#pause").prop("disabled", false);
+    $("#reverse").prop("disabled", false);
+    $("#play").prop("disabled", true);
+    if (jp.getCurrentTimeline().progress() != 1) {
       jp.getCurrentTimeline().play();
     } else {
       jp.getCurrentTimeline().restart();
@@ -8,10 +11,14 @@ this.activate = function() {
   }.bind(this));
 
   $("#pause").click(function() {
+    $("#play").prop("disabled", false);
+    $("#pause").prop("disabled", true);
     jp.getCurrentTimeline().pause();
   }.bind(this));
 
   $("#reverse").click(function() {
+    $("#reverse").prop("disabled", true);
+    $("#play").prop("disabled", false);
     jp.getCurrentTimeline().reverse();
   }.bind(this));
 
@@ -33,4 +40,15 @@ this.activate = function() {
     this.started = false;
     jp.getPrevious();
   }.bind(this));
+
 };
+
+this.update = function() {
+  $("#next").prop("disabled", !jp.hasNext() || !jp.isCurrentCompleted());
+  $("#previous").prop("disabled", !jp.hasPrevious());
+  if (jp.getCurrentTimeline() && jp.getCurrentTimeline().progress() == 1) {
+    $("#play").prop("disabled", true);
+    $("#pause").prop("disabled", true);
+  }
+};
+

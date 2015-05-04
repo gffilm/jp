@@ -1,5 +1,5 @@
 {
- "scripts": ["animation"],
+ "scripts": ["animation", "jquery-ui"],
  "styles": ["main"],
  "layouts": ["footer"],
  "id": "000",

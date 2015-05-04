@@ -3,5 +3,6 @@
  "styles": ["main"],
  "layouts": ["content"],
  "id": "001",
- "type": "page"
+ "type": "page",
+ "completionTrigger": "description"
 }

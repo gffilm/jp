@@ -110,6 +110,24 @@ jp.getNext = function() {
 };
 
 
+
+/*
+ * Is there a next page?
+ * @return {boolean}
+*/
+jp.hasNext = function() {
+  return jp.getEngine().hasNext();
+};
+
+/*
+ * Is there a previous page?
+ * @return {boolean}
+*/
+jp.hasPrevious = function() {
+  return jp.getEngine().hasPrevious();
+};
+
+
 /*
  * Convenience call to get the previous page
 */
@@ -118,8 +136,16 @@ jp.getPrevious = function() {
 };
 
 /*
- * Base function for when the engine is activated
+ * Gets the current timeline
 */
 jp.getCurrentTimeline = function() {
   return jp.getEngine().getCurrentTimeline();
+};
+
+
+/*
+ * Determines if the current model is completed
+*/
+jp.isCurrentCompleted = function() {
+  return jp.getEngine().isCurrentCompleted();
 };

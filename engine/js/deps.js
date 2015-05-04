@@ -39,18 +39,16 @@ deps.getScripts = function() {
   // Set the scripts
   if (deps.PRODUCTION_MODE) {
     scripts = [
-      //'js/lib/min/modernizr.min.js',
+      'js/lib/min/modernizr.min.js',
       'js/lib/min/gsap/TweenMax.min.js',
       //'js/lib/min/gsap/TimelineMax.min.js',
       'js/compiled.js'
     ];
   } else {
     scripts = [
-      //'js/lib/modernizr.js',
+      'js/lib/modernizr.js',
+      'js/lib/gsap/TimelineMax.js',
       'js/lib/gsap/TweenMax.js',
-      //'js/lib/jquery-ui.js',
-      //'js/lib/gsap/TimelineMax.js',
-      'js/lib/gsap/utils/SplitText.min.js',
       'js/jp/base.js',
       'js/jp/assets.js',
       'js/jp/api.js',
